@@ -6,28 +6,63 @@
   <mapper namespace="com.doom.s1.member.MemberDAO">
   
   <sql id="search">
-		like '%'||#{search}||'%'
+		like '%'||#{search}||'%' ORDER BY id ASC
 	</sql>
+
 	
-	<sql id="kind">
-		<choose>
-			<when test="kind=='mi'">
-				id
-			</when>
-			<when test="kind=='mn'">
-				name
-			</when>
-			<when test="kind=='me'">
-				email
-			</when>
-			<otherwise>
-				phone
-			</otherwise>
-		</choose>
-	</sql>
+	<select id="memberList" parameterType="com.doom.s1.util.Pager" resultType="com.doom.s1.member.MemberVO">
+		SELECT * FROM
+			(SELECT N.*,rownum R FROM
+				(SELECT * FROM member WHERE
+				<choose>
+					<when test="kind=='mi'">
+						id
+					</when>
+					<when test="kind=='mn'">
+						name
+					</when>
+					<when test="kind=='me'">
+						email
+					</when>
+					<otherwise>
+						phone
+					</otherwise>
+				</choose>
+				<include refid="search"></include>) N)
+		WHERE R BETWEEN #{startRow} AND #{lastRow}
+	</select>
+	
+	<select id="memberCount" parameterType="com.doom.s1.util.Pager" resultType="Long">
+		SELECT count(id) FROM member
+			<where>
+				<if test="kind =='mi'">
+					id <include refid="search"></include>
+				</if>
+				<if test="kind =='mn'">
+					name <include refid="search"></include>
+				</if>
+				<if test="kind == 'me'">
+					email <include refid="search"></include>
+				</if>
+				<if test="kind == 'mp'">
+					phone<include refid="search"></include>
+				</if>
+			</where>
+	</select>
+	
+	<delete id="memberDeletes" parameterType="List">
+		DELETE member WHERE id IN 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
 	
 	<select id="memberIdCheck" resultType="MemberVO" parameterType="MemberVO">
 		select id from member where id=#{id}
+	</select>
+	
+		<select id="memberEmailCheck" resultType="MemberVO" parameterType="MemberVO">
+		select email from member where email=#{email}
 	</select>
 	
 <select id="memberNaverCheck" resultType="MemberVO" parameterType="MemberVO">
@@ -35,7 +70,7 @@
 	</select>
   
   	<insert id="memberJoin" parameterType="MemberVO">
-		insert into member values (#{id}, #{pw}, #{email}, #{name}, #{phone})
+		insert into member values (#{id}, #{pw}, #{email}, #{name}, #{phone},0)
 	</insert>
 	
 	<select id="memberLogin_HOME" parameterType="MemberVO" resultType="MemberVO">
@@ -43,16 +78,18 @@
 	</select>
   
   	<update id="memberUpdate" parameterType="MemberVO">
-		update member set email=#{name}, name=#{email}, phone=#{phone} where id=#{id}
+		update member set  email=#{email}, name=#{name},phone=#{phone} where id=#{id}
 	</update>
 	
 	<delete id="memberDelete" parameterType="MemberVO">
 		delete member where id=#{id}
 	</delete>
-	
-	
+		
+	<select id="memberIdFind" parameterType="MemberVO" resultType="MemberVO">
+		select id from member where email=#{email} and name=#{name}
+	</select>
   
-  
+
   
   
   

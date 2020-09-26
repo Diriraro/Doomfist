@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.doom.s1.seller.SellCheckDAO">
+	
+	<select id="sellCheck" parameterType="Long" resultType="com.doom.s1.seller.SellCheckVO">
+		SELECT * FROM sel_check WHERE st_key=#{st_key}
+	</select>
+	
+	<insert id="insertSelCheck" parameterType="com.doom.s1.payFirst.PayFirstVO">
+		INSERT INTO sel_check VALUES(
+		sel_check_seq.nextval, 
+		(SELECT st_key FROM payfirst WHERE pf_key=#{pf_key}),
+		(SELECT id FROM payfirst WHERE id=#{id} AND pf_key=#{pf_key}),
+		(SELECT phone FROM member WHERE id=#{id}),
+		'0',	<!-- 구매 메뉴*수량은 나중에 update -->
+		(SELECT to_char(pf_date,'yymmdd') FROM payFirst WHERE pf_key=#{pf_key}),
+		(SELECT buy_address FROM buy_address WHERE pf_key=#{pf_key}),
+		0
+		)
+	</insert>
+	
+	<select id="selectMenu" parameterType="Long" resultType="com.doom.s1.paySecond.PaySecondVO">
+		SELECT * FROM paySecond WHERE pf_key=#{pf_key}
+	</select>
+	
+	<update id="updateMenu" parameterType="String">
+		UPDATE sel_check SET sel_meco=#{meco} WHERE sel_key =(SELECT sel_key FROM (SELECT * FROM sel_check ORDER BY sel_key DESC) WHERE rownum=1)
+	</update>
+	
+	<select id="orderCount" parameterType="Long" resultType="Long">
+		SELECT count(*) FROM sel_check WHERE st_key=#{st_key} AND sel_date=to_char(sysdate,'yymmdd') AND sel_okcheck=0
+	</select>
+	
+	<update id="updateOkCheck" parameterType="com.doom.s1.seller.SellCheckVO">
+		UPDATE sel_check SET sel_okcheck=#{sel_okcheck} WHERE sel_key=#{sel_key}
+	</update>
+	
+	<delete id="deletePayFirst" parameterType="com.doom.s1.seller.SellCheckVO">
+		DELETE payfirst WHERE pf_key=(SELECT pf_key FROM 
+		(SELECT * FROM payfirst ORDER BY pf_key DESC)
+		WHERE id=(SELECT DISTINCT selb_id FROM 
+		(SELECT * FROM sel_check ORDER BY sel_key DESC) 
+		WHERE selb_id=#{selb_id})
+		AND rownum=1)
+	</delete>
+	
+	<delete id="orderDel" parameterType="Long">
+		DELETE sel_check WHERE sel_key=#{sel_key}
+	</delete>
+	
+</mapper>

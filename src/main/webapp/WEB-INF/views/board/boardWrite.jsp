@@ -13,7 +13,7 @@
 <body>
 	<c:import url="../template/header.jsp"></c:import>
 	<div class="container">
-		<h1>${board}WriteForm</h1>
+
 
 
 		<form action="./${board}Write" id="frm" method="post"

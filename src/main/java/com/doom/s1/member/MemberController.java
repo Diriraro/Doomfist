@@ -1,13 +1,14 @@
 package com.doom.s1.member;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.simple.JSONObject;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.doom.s1.member.NaverLoginBO;
+import com.doom.s1.util.Pager;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.Response;
 
@@ -80,10 +82,25 @@ public class MemberController {
 		return mv;
 	}
 	
+	@PostMapping("/member/memberEmailCheck")
+	public ModelAndView memberEmailCheck(ModelAndView mv, MemberVO memberVO, HttpSession session) throws Exception{
+		memberVO = memberService.memberEmailCheck(memberVO);
+		//null -> 가입 가능1
+		//null이 아니면 중복 
+		int result =0;
+		if (memberVO==null) {
+			result=1;
+			
+		}
+		mv.addObject("result", result);
+		mv.setViewName("common/ajaxResult");
+		
+		return mv;
+	}
 
 	@RequestMapping(value= "/member/memberLogin_HOME")
 	public void memberLogin_HOME(@CookieValue(value = "cId", required = false) String cId, Model model) {
-		System.out.println(cId);
+		
 	}
 
 	@PostMapping(value = "/member/memberLogin_HOME")
@@ -101,13 +118,32 @@ public class MemberController {
 			 session.setAttribute("member", memberVO);
 			 mv.setViewName("redirect:../");
 		 }else {
-			 mv.addObject("result", "Login Fail");
-			 mv.addObject("path", "./memberJoin");
+			 mv.addObject("result", "아이디 혹은 비밀번호를 확인해주세요");
+			 mv.addObject("path", "./memberLogin");
 			 mv.setViewName("common/result");
 		 }
 		 
 		 return mv;
 	}
+	
+	@RequestMapping(value= "/member/memberIdFind")
+	public void memberIdFind() {
+	}
+	
+	@PostMapping(value = "/member/memberIdFind")
+	public ModelAndView memberIdFind(MemberVO memberVO, ModelAndView mv,HttpSession session) throws Exception{
+		memberVO = memberService.memberIdFind(memberVO);
+		if (memberVO !=null) {
+			session.setAttribute("member", memberVO);
+			mv.setViewName("redirect:./memberIdFindResult");
+		}else {
+			mv.addObject("result","등록된 아이디가 없습니다");
+			mv.setViewName("common/result");
+		}
+		
+		return mv;
+	}
+
 	
 	@RequestMapping(value = "/member/memberLogout")
 	public String memberLogout(HttpSession session)throws Exception{
@@ -129,7 +165,9 @@ public class MemberController {
 		
 		if (result>0) {
 			session.setAttribute("member", memberVO);
-			mv.setViewName("redirect:./memberPage");
+			mv.addObject("result", "수정 성공");
+			mv.addObject("path", "./memberPage");
+			mv.setViewName("common/result");
 		}else {
 			mv.addObject("result", "수정 실패");
 			mv.addObject("path", "./memberPage");
@@ -140,6 +178,11 @@ public class MemberController {
 	
 	@RequestMapping(value= "/member/memberPage")
 	public void memberPage() throws Exception {
+
+	}
+	
+	@RequestMapping(value= "/member/memberIdFindResult")
+	public void memberIdFindResult() throws Exception {
 
 	}
 	
@@ -176,7 +219,7 @@ public class MemberController {
 	//네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/member/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
-	System.out.println("여기는 callback");
+	//System.out.println("여기는 callback");
 	OAuth2AccessToken oauthToken;
 	oauthToken = naverLoginBO.getAccessToken(session, code, state);
 	//1. 로그인 사용자 정보를 읽어온다.
@@ -196,7 +239,7 @@ public class MemberController {
 	//response의 nickname값 파싱
 	String email = (String)response_obj.get("email");
 	String name = (String)response_obj.get("name");
-	System.out.println(email);
+	//System.out.println(email);
 	//4.파싱 닉네임 세션으로 저장
 	session.setAttribute("sessionId",email); //세션 생성
 	session.setAttribute("sessionName",name);
@@ -206,15 +249,47 @@ public class MemberController {
 	//로그아웃
 	@RequestMapping(value = "/member/logout", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session)throws IOException {
-	System.out.println("여기는 logout");
+	//System.out.println("여기는 logout");
 	session.invalidate();
 	return "redirect:../";
 	}
-
-
 	
+	@GetMapping("/member/memberList")
+	public ModelAndView memberList(Pager pager)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		List<MemberVO> memberVOs = memberService.memberList(pager);
+		
+		mv.addObject("list", memberVOs);
+		mv.addObject("pager", pager);
+		mv.setViewName("member/memberList");		
+		
+		return mv;
+	}
 	
+	@GetMapping("/member/memberDeletes")
+	public ModelAndView memberDeletes(String[] ids)throws Exception{
+		//배열을 List로 변환
+		ModelAndView mv = new ModelAndView();
+		List<String> list = Arrays.asList(ids);
+		int result = memberService.memberDeletes(list);
 
-	
+		mv.addObject("result", result);
+		mv.setViewName("common/ajaxResult");
+		
+		return mv;
+	}
+//	
+//	@GetMapping("/member/memberLists")
+//	public ModelAndView memberLists(Pager pager)throws Exception{
+//		ModelAndView mv = new ModelAndView();
+//		List<MemberVO> ar = memberService.memberList(pager);
+//		
+//		mv.addObject("member", ar);
+//		mv.addObject("pager", pager);
+//		mv.setViewName("member/memberLists");		
+//		
+//		return mv;
+//		
+//	}
 
 }

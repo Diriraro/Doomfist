@@ -40,7 +40,7 @@ public class HomeController {
 	@RequestMapping(value = "/test")
 	public ModelAndView test() {
 		ModelAndView mv = new ModelAndView();
-		System.out.println("맵테스트");
+//		System.out.println("맵테스트");
 		mv.addObject("vo", "캠퍼스타운역"); 
 		mv.setViewName("./test");
 		return mv;

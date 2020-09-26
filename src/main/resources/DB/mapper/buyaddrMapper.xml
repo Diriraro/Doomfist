@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.doom.s1.buyaddr.BuyAddrDAO">
+
+	<insert id="insertBuyAddr" parameterType="com.doom.s1.buyaddr.BuyAddrVO">
+		INSERT INTO buy_Address VALUES(buy_addr_seq.nextval, #{pf_key}, #{buy_address})
+	</insert>
+	
+	<select id="selectBuyAddr" parameterType="String" resultType="com.doom.s1.buyaddr.BuyAddrVO">
+		SELECT * FROM buy_address WHERE pf_key =(SELECT pf_key FROM (SELECT * FROM payfirst ORDER BY pf_key DESC) WHERE id=#{id} AND rownum=1)
+	</select> 
+
+</mapper>

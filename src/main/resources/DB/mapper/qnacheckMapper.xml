@@ -5,6 +5,7 @@
   
   <mapper namespace="com.doom.s1.qnacheck.QnaCheckDAO">
   	<insert id="qnaCheckInsert" >
+
   		insert into qnacheck values(qckey_seq.nextval,#{id}, #{qc_check},#{qna_storekey},#{qc_title},sysdate)
   	</insert>
   	
@@ -14,7 +15,9 @@
   		(select qna_title from qna where qna_storekey=#{qna_storekey}),
   		#{qna_storekey},
   		(select qna_contents from qna where qna_storekey=#{qna_storekey}),
-  		(select id from qna where qna_storekey=#{qna_storekey})
+  		(select id from qna where qna_storekey=#{qna_storekey}),
+  		(SELECT qna_kind FROM qna WHERE qna_storeKey=#{qna_storeKey}),
+  		(SELECT qna_tag FROM qna WHERE qna_storeKey=#{qna_storeKey})
   		)
   	</insert>
   
@@ -22,6 +25,7 @@
   		delete qna where qna_storekey=#{qna_storekey}
   	</delete>
   	
+
   	<insert id="storeFileInsert" parameterType="com.doom.s1.storeList.file.StoreFileVO">
   		insert into storefile values(#{st_key},stfile_seq.nextval,#{stfile_name},#{stfile_oriname})
   	</insert>
@@ -46,5 +50,6 @@
 		select st_key from storelist where id=#{id} order by st_key asc
 	</select>
 	
+
 
   </mapper>

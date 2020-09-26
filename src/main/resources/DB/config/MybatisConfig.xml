@@ -18,7 +18,8 @@
 		<typeAlias type="com.iu.s5.memo.MemoVO" alias="MemoVO"/>
 		<typeAlias type="com.iu.s5.qna.QnaVO" alias="QnaVO"/>
 		<typeAlias type="com.iu.s5.util.Pager" alias="Pager"/> -->
-
+		<typeAlias type="com.doom.s1.payFirst.PayFirstVO" alias="PayFirstVO"/>
+		<typeAlias type="com.doom.s1.paySecond.PaySecondVO" alias="PaySecondVO"/>
 	</typeAliases>
 
 </configuration>

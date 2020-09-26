@@ -32,7 +32,6 @@ public class NoticeService implements BoardService {
 		pager.makeRow();
 		long totalCount = noticeDAO.boardCount(pager);
 		pager.makePage(totalCount);
-		
 		return noticeDAO.boardList(pager);
 	}
 
@@ -50,19 +49,13 @@ public class NoticeService implements BoardService {
 		
 		//noticeDAO table insert 해야 파일들을 집어 넣을것이다.
 		 int result = noticeDAO.boardWrite(boardVO);
-		// 파일들을 가져와야하니 반복문		
-		
-		  
 		return result; //
-		
-		
-		//하고 데이터베이스에 연결하는거 하기
 	}
 
 	@Override
 	public int boardUpdate(BoardVO boardVO) throws Exception {
 		int result = noticeDAO.boardUpdate(boardVO);
-		System.out.println("service uo:"+result);
+		//System.out.println("service uo:"+result);
 		return result;
 	}
 

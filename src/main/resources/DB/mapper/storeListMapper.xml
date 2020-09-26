@@ -5,16 +5,71 @@
   
 <mapper namespace="com.doom.s1.storeList.StoreListDAO">
 
+	<delete id="storeDelete" parameterType="java.util.List">
+		DELETE storeList WHERE st_key IN
+		<foreach collection="list" item="st_key" open="(" close=")" separator=",">
+			#{st_key}
+		</foreach>
+	</delete>
+
+	<sql id="search">
+		like '%'||#{search}||'%' ORDER BY st_key DESC
+	</sql>
+
+	<select id="listCheck" parameterType="com.doom.s1.util.Pager" resultType="com.doom.s1.storeList.StoreListVO">
+		SELECT * FROM
+			(SELECT N.*,rownum R FROM
+				(SELECT * FROM storeList WHERE
+				<choose>
+					<when test="kind =='ln'">
+						st_name
+					</when>
+					<when test="kind == 'lk'">
+						st_kind
+					</when>
+					<when test="kind == 'li'">
+						st_address
+					</when>
+					<when test="kind == 'lt'">
+						st_tag
+					</when>
+					<otherwise>
+						st_key
+					</otherwise>
+				</choose>
+				<include refid="search"></include>) N)
+		WHERE R BETWEEN #{startRow} AND #{lastRow}
+	</select>
+	
+	
+	<select id="listCount" parameterType="com.doom.s1.util.Pager" resultType="Long">
+		SELECT count(st_key) FROM storeList
+			<where>
+				<if test="kind =='ln'">
+					st_name <include refid="search"></include>
+				</if>
+				<if test="kind =='lk'">
+					st_kind <include refid="search"></include>
+				</if>
+				<if test="kind == 'li'">
+					st_address <include refid="search"></include>
+				</if>
+				<if test="kind == 'lt'">
+					st_tag<include refid="search"></include>
+				</if>
+			</where>
+	</select>
+
 	<select id="storeListSelect" parameterType="java.lang.Long" resultType="com.doom.s1.storeList.StoreListVO">
-		SELECT * FROM storelist WHERE st_key=#{st_key}
+		SELECT * FROM storeList WHERE st_key=#{st_key}
 	</select>
 	
 	<insert id="storeReviewWrite" parameterType="com.doom.s1.storeList.StoreListVO">
-		INSERT INTO storeReview VALUES(#{re_num},sysdate,#{re_contents},#{id},#{st_key},5)
+		INSERT INTO storeReview VALUES(#{re_num},sysdate,#{re_contents},#{id},#{st_key},#{re_rating})
 	</insert>
 	
 	<select id="storeReviewSelect" parameterType="java.lang.Long" resultType="com.doom.s1.storeList.StoreListVO">
-		SELECT re_num,re_date,re_contents,id FROM storeReview WHERE st_key=#{st_key} ORDER BY re_num DESC
+		SELECT re_num,re_date,re_contents,id,re_rating FROM storeReview WHERE st_key=#{st_key} ORDER BY re_num DESC
 	</select>
 	
 	<select id="reviewNum" resultType="Long">
@@ -24,5 +79,50 @@
 	<delete id="storeReviewDelete" parameterType="Long">
 		DELETE storeReview WHERE re_num=#{re_num}
 	</delete>
+	
+	<select id="selectFileName" parameterType="Long" resultType="String">
+		select stfile_name from storefile where st_key=#{st_key} and rownum=1
+	</select>
+	
+	<!-- StoreListSelectInterceptor에서 사용 -->
+	<select id="select_stKey" parameterType="Long" resultType="Long">
+		SELECT st_key from storelist where st_key=#{st_key}
+	</select>
+	
+	<select id="select_id" parameterType="Long" resultType="com.doom.s1.storeList.StoreListVO">
+		select id from storelist where st_key = #{st_key}
+	</select>
+	<select id="selectReview_id" parameterType="Long" resultType="com.doom.s1.storeList.StoreListVO">
+		select id from storeReview where re_num = #{re_num}
+	</select>
+	<!-- StoreListSelectInterceptor에서 사용 -->
+	
+	<update id="storeListUpdate" parameterType="com.doom.s1.storeList.StoreListVO">
+  update storeList set st_name=#{st_name}, st_phone=#{st_phone}, st_address=#{st_address}, st_kind=#{st_kind}, st_tag=#{st_tag} where st_key=#{st_key}
+  	</update>
+  	
+  	<update id="storeMenuUpdate" parameterType="com.doom.s1.storeList.storeMenu.StoreMenuVO">
+  update storeMenu set sm_menu=#{sm_menu}, sm_price=#{sm_price} where sm_key=#{sm_key}
+  	</update>
+
+  	<select id="storePage" parameterType="String" resultType="com.doom.s1.storeList.StoreListVO">
+		select * from storeList where id=#{id} order by st_key asc
+	</select>
+	
+	<insert id="storeMenuInsert" parameterType="com.doom.s1.storeList.storeMenu.StoreMenuVO">
+		insert into storemenu values(#{sm_menu}, #{sm_price}, smkey_seq.nextval, #{st_key})
+	</insert>
+	
+	<delete id="storeMenuDelete" parameterType="com.doom.s1.storeList.storeMenu.StoreMenuVO">
+		delete storemenu where sm_key=#{sm_key} 
+	</delete>
+	
+	<select id="listAll" resultType="com.doom.s1.storeList.StoreListVO">
+		SELECT * FROM storeList
+	</select>
+	
+	<select id="buyCheck" parameterType="Long" resultType="com.doom.s1.seller.SellCheckVO">
+		SELECT DISTINCT selb_id FROM sel_check WHERE st_key=#{st_key}
+	</select>
 	
 </mapper>

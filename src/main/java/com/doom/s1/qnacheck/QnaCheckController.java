@@ -32,7 +32,7 @@ public class QnaCheckController {
 	public ModelAndView qnaOK(HttpServletRequest request)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		long qna_storekey = Long.parseLong(request.getParameter("qna_storekey"));
-		System.out.println(qna_storekey);
+//		System.out.println(qna_storekey);
 		int result = qnaCheckService.qnaOK(qna_storekey);
 		mv.setViewName("redirect:../qna/qnaList");
 		
@@ -54,7 +54,7 @@ public class QnaCheckController {
 	public ModelAndView Statuscheck(HttpServletRequest request)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		String id = request.getParameter("id");
-		System.out.println(id);
+//		System.out.println(id);
 		List<QnaCheckVO> ar = qnaCheckService.Statuscheck(id);
 		List<StoreListVO> aar = qnaCheckService.keycompare(id);
 		List<String> result = new ArrayList<String>();

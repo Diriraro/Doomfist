@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.doom.s1.paySecond.PaySecondDAO">
+  
+  <!--첫번째 결제가 끝나면  두번째 결제 페이지 데이터 삽입  -->
+  <insert id="paySecondInsert" parameterType="com.doom.s1.paySecond.PaySecondVO">
+  insert into paySecond values(
+  	pays_seq.nextval,
+  	#{ps_menu},
+  	#{ps_count},
+  	#{ps_multi},
+  	#{pf_key}
+  	)
+  </insert>
+  
+  
+  <!-- 3 결제가 끝나면  Second 테이블 ps_count값이 0인 데이터 삭제.  -->
+  <delete id="paySecondDelete" parameterType="Long">
+	 DELETE paysecond where ps_count = 0 
+  </delete>
+  
+  <!-- 1 결제가 성공하면  첫번쨰 결제페이지 pf_check -> 1로 변경  -->
+  <update id="payFirstUpdate" parameterType="Long">
+  update payfirst set pf_check = 1 
+  where pf_key= (SELECT * FROM (
+  SELECT pf_key FROM payfirst ORDER BY ROWNUM DESC)
+   WHERE ROWNUM = 1)
+  </update>
+  
+  
+  <!-- 2 결제가 성공하면  첫번째 결제페이지 pf_check 값이 0인 데이터 삭제.  -->
+  <delete id="payFirstDelete" parameterType="Long">
+  	delete payFirst where pf_check = 0
+  </delete>
+  
+  <select id="payS" parameterType="Long" resultType="PaySecondVO">
+	select * from paysecond WHERE pf_key = ( select pf_key from (SELECT * from payfirst ORDER BY pf_key DESC) WHERE ROWNUM=1)
+  </select>
+  
+  
+  </mapper>

@@ -58,7 +58,6 @@ public class NoticeController {
 		
 		int result = noticeService.boardUpdate(noticeVO);
 		String path="";
-		System.out.println("no컨트롤 확인용"+result);
 		
 		if(result>0) {
 			path= "redirect:./noticeList";

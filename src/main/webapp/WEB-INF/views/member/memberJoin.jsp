@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DoomFood | 회원가입</title>
 <c:import url="../template/boot.jsp"></c:import>
 <c:import url="../template/style.jsp"></c:import>
 </head>
@@ -14,52 +14,55 @@
 
 <div class="container">
   <div class="page-header text-center text-info">
-		   <div><img src="${pageContext.request.contextPath}/resources/images/sign_up.png"> </div> 
+
+		   <div><img src="${pageContext.request.contextPath}/resources/images/sign_up_2.png"> </div> 
     <br></br>
     <br></br>
   </div>
   <form class="form-horizontal Shadow" id="frm" action="./memberJoin" method="post" enctype="multipart/form-data" >
+  <font style="color: red; margin-left: 780px;">*</font>&nbsp;<font style="font-size: 12px;">항목은 필수 표기 항목입니다</font> 
+  <div  style="width: 800px; border-top: 3px #80d6ff solid;   margin-left:150px; ">
  <table class="text-info Shadow" style="width: 100%; border-top: 3px white solid;">
    <tbody>
     <tr>
 
-     	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;아이디 : </th>
-      	<td style="border-bottom: 2px white solid; height: 50px;"><input type="text" id="id" name="id"> (영문소문자/숫자, 5~10자)<td>
-		<hr></hr>
+     	<th style="border-bottom: 1px #dfdfdf solid;" scope="row">&nbsp;&nbsp;아이디 <font style="color: red;">*</font> </th>
+      	<td style="border-bottom: 1px #dfdfdf solid; height: 60px;"><input type="text" id="id" name="id"> (영문소문자/숫자, 5~10자)<td>
+		<br>
     </tr>
     
-    
 	<tr>
-      	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;비밀번호 : </th>
-      	<td style="border-bottom: 2px white solid; height: 50px;"><input type="password" class="pwd" id="pw"  name="pw"></td>
+      	<th style="border-bottom: 1px #dfdfdf solid; width: 150px;" scope="row">&nbsp;&nbsp;비밀번호 <font style="color: red;">*</font> </th>
+      	<td style="border-bottom: 1px #dfdfdf solid; height: 60px;"><input type="password" class="pwd" id="pw"  name="pw"></td>
 	</tr>
 
 	<tr>
-    	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;비밀번호 확인 : </th>
-      	<td style="border-bottom: 2px white solid; height: 50px;"><input type="password"  class="pwd" id="pw2"  name="pw2"><font id="chpw"></font><td>
+    	<th style="border-bottom: 1px #dfdfdf solid; width: 150px; " scope="row">&nbsp;&nbsp;비밀번호 확인 <font style="color: red;">*</font> </th>
+      	<td style="border-bottom: 1px #dfdfdf solid; height: 50px;"><input type="password"  class="pwd" id="pw2"  name="pw2"><font id="chpw"></font><td>
      	
     </tr> 
 
 	<tr>
-      	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;E-Mail : </th>
-      	<td style="border-bottom: 2px white solid; height: 50px;"><input value="${sessionId}" type="email"  id="email"  name="email"><td>
+      	<th style="border-bottom: 1px #dfdfdf solid; width: 150px; " scope="row">&nbsp;&nbsp;E-Mail <font style="color: red;">*</font> </th>
+      	<td style="border-bottom: 1px #dfdfdf solid; height: 50px;"><input value="${sessionId}" type="email"  id="email"  name="email"><td>
     </tr>
 
 	<tr>
-     	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;이름 : </th>
-     	<td style="border-bottom: 2px white solid; height: 50px;"><input value="${sessionName}" type="text"  id="name"  name="name"><td>
+     	<th style="border-bottom: 1px #dfdfdf solid; width: 150px;" scope="row">&nbsp;&nbsp;이름 <font style="color: red;">*</font> </th>
+     	<td style="border-bottom: 1px #dfdfdf solid; height: 50px;"><input value="${sessionName}" type="text"  id="name"  name="name"><td>
     </tr>
 
 	<tr>
-     	<th style="background-color: #e6f5ff; width: 150px; border-bottom: 2px white solid;" scope="row">&nbsp;&nbsp;연락처 : </th>
-     	<td style="border-bottom: 3px white solid; height: 50px;"><input type="text"  id="phone"  name="phone"><td>
+     	<th style="border-bottom: 1px #dfdfdf solid; width: 150px; " scope="row">&nbsp;&nbsp;연락처 <font style="color: red;">*</font> </th>
+     	<td style="border-bottom: 1px #dfdfdf solid; height: 50px;"><input type="text"  id="phone"  name="phone"><td>
     </tr>
     </tbody>
     </table>
+    </div>
        <hr></hr>
        <div id="result">
-        <textarea style="width: 100%; height: 120px;" name="" id="">제1조(목적)
-이 약관은 게임피아 주식회사(전자상거래 사업자)가 운영하는 소프라노 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리,의무 및 책임사항을 규정함을 목적으로 합니다.
+        <textarea style="width: 100%; height: 120px;" name="" id="" readonly="readonly">제1조(목적)
+이 약관은 둠피스트 주식회사(전자상거래 사업자)가 운영하는 둠피스트 푸드 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리,의무 및 책임사항을 규정함을 목적으로 합니다.
 ※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다.」
 
 제2조(정의)
@@ -86,9 +89,9 @@
 ④ 전항의 경우 “몰”은 이로 인하여 이용자가 입은 손해를 배상합니다. 다만, “몰”이 고의 또는 과실이 없음을 입증하는 경우에는 그러하지 아니합니다.
        </textarea>
        <hr></hr>
-       <font style="color: red;">(필수)</font> 이용약관에 동의하십니까? <input class="check" type="checkbox" id="check1">
+       <font style="color: red;">(필수)</font> 이용약관에 동의하십니까? <input class="check" type="checkbox" id="check1">&nbsp;동의함
        <hr></hr>
-       <textarea style="width: 100%; height: 120px;" name="" id="">1. 개인정보 수집목적 및 이용목적
+       <textarea style="width: 100%; height: 120px;" name="" id="" readonly="readonly">1. 개인정보 수집목적 및 이용목적
 
 가. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산
 
@@ -117,16 +120,17 @@ o 계약 또는 청약철회 등에 관한 기록
 -보존기간 : 5년
        </textarea>
        <hr></hr>
-		 <font style="color: red;">(필수)</font>개인정보 수집 및 이용에 동의하십니까? <input class="check" type="checkbox" id="check2">
+		 <font style="color: red;">(필수)</font>개인정보 수집 및 이용에 동의하십니까? <input class="check" type="checkbox" id="check2">&nbsp;동의함
 		<hr></hr>
-		 <font style="color: red;">(필수)</font>이용약관 및 개인정보수집 및 이용에 모두 동의합니다. <input type="checkbox" id="checkAll">
+		 <font style="color: red;">(필수)</font>이용약관 및 개인정보수집 및 이용에 모두 동의합니다. <input type="checkbox" id="checkAll">&nbsp;동의함
 		<hr></hr>
 		</div>
-    <button type="submit" id="btn" class="btn btn-primary">가입완료</button>
+    <!-- <button type="submit" id="btn" class="btn" style="outline: 0px;"><img alt="" border="0" src="${pageContext.request.contextPath}/resources/images/joinbtn.png"></button> -->
+    <input type="image" id="joinbtn" style="outline: 0;margin-left: 44%; " src="${pageContext.request.contextPath}/resources/images/joinbtn_3.png">
     
   </form>
 </div>
-<footer style="margin-top: 15%">
+<footer style="margin-top: 1%">
 <c:import url="../template/footer.jsp" ></c:import>
 </footer>
 
@@ -160,6 +164,32 @@ $("#id").blur(function() {
 	});
 });
 
+$("#email").blur(function() {
+	var email = $("#email").val();
+	
+	$.ajax({
+		type : "post",	//메서드형식
+		url : "./memberEmailCheck", //url 주소
+		data : {
+			email : email}, //parameter
+		success: function(e) {
+			if ($("#email").val()!=""&& e==0) {
+				alert("중복된 이메일입니다"); 
+				location.reload();
+			}else if ($("#email").val()!=""&&e==1) {
+				alert("사용가능한 이메일 입니다.");
+			}
+			
+		},
+		error: function() {
+			alert("error 발생")
+		}
+	
+		
+	});
+});
+
+
 
 $(function(){
     $('#pw').keyup(function(){
@@ -180,7 +210,7 @@ $('#pw2').keyup(function() {
 	});
 });
 
-$("#btn").click(function() {
+$("#joinbtn").click(function() {
 	var pw = $("#pw").val();
 	var pw2 = $("#pw2").val();
 	var email = $("#email").val();
@@ -205,7 +235,7 @@ $("#btn").click(function() {
 		return false;
 	}else if ($('#checkAll').is(":checked") == false) {
 		alert("이용 및 약관에 동의해주세요");
-		console.log(email);
+		/* console.log(email); */
 		return false;
 	}else if (pw==pw2) {
 		$("#frm").submit();

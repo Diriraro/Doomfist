@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.doom.s1.member.MemberDAO;
+import com.doom.s1.member.MemberVO;
 import com.doom.s1.qna.qnaFile.QnaFileDAO;
 import com.doom.s1.qna.qnaFile.QnaFileVO;
 import com.doom.s1.qnacheck.QnaCheckDAO;
@@ -34,6 +36,10 @@ public class QnaService {
 	@Autowired
 	private QnaCheckDAO qnaCheckDAO;
 	
+	public MemberVO selectMember(String id) throws Exception{
+		return qnaDAO.selectMember(id);
+	}
+	
 	public List<QnaFileVO> qnaFileSelect(long qna_storekey)throws Exception{
 		return qnaFileDAO.qnaFileSelect(qna_storekey);
 	}
@@ -45,23 +51,20 @@ public class QnaService {
 	public int qnaJoin(QnaVO qnaVO, MultipartFile[] files,long [] qm_price, String [] qm_menu) throws Exception{
 		
 		String path = servletContext.getRealPath("/resources/qna_images");
-		qnaVO.setQna_storekey(qnaDAO.qnaNum());
-		System.out.println(qnaVO.getQna_storekey());
-		int result = qnaDAO.qnaJoin(qnaVO);
 		System.out.println(path);
+		qnaVO.setQna_storekey(qnaDAO.qnaNum());
+		
+		int result = qnaDAO.qnaJoin(qnaVO);
+		
 		for(MultipartFile file : files) {
 			if(file.getSize()>0) {
 				QnaFileVO qnaFileVO = new QnaFileVO();
 				String fileName = fileSaver.saveByTransfer(file, path);
-				System.out.println(path);
 				qnaFileVO.setQna_storekey(qnaVO.getQna_storekey());
 				qnaFileVO.setQf_filename(fileName);
-				qnaFileVO.setQf_oriname(file.getOriginalFilename());
-				
+				qnaFileVO.setQf_oriname(file.getOriginalFilename());				
 			
-				qnaFileDAO.fileInsert(qnaFileVO);
-				
-				
+				qnaFileDAO.fileInsert(qnaFileVO);				
 			}
 		}
 		
@@ -85,8 +88,8 @@ public class QnaService {
 		
 		qnaCheckDAO.qnaCheckInsert(qnaCheckVO);
 		
+		qnaDAO.memberUpdate();
 		
-
 		
 		return result;
 	}

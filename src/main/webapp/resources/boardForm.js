@@ -15,14 +15,14 @@ $("#file").on("click", ".remove", function() {
 
 $("#add")
 		.click(
-				function() {
-					if (count < 6) {
+				function() {   
+					if (count < 5) {
 						$("#file")
 								.append(
-										'<div class="form-group"> <label for="file"> File :</label> <input type="file" class="form-control files" name="files"> <i class="glyphicon glyphicon-remove remove"></i> </div>');
+								'<div class="form-group"> <input type="file" class="form-control files" name="files" style="width: 342px; display: inline-block; margin-left: 182px;"> <i class="glyphicon glyphicon-remove remove"></i> </div>');
 						count++;
 					} else {
-						alert("파일은 최대 5개 까지입니다.")
+						alert("이미지는 최대 5개 까지입니다.")
 					}
 
 				});
@@ -85,26 +85,59 @@ $("#btn").click(function() {
 	// title, contents 데이터 유무 검증
 	var title = $("#qna_title").val();
 	var qna_contents = $("#qna_contents").val();
-
+	var qna_kind = $("#qna_kind").val();
+	var qna_menu = $(".qm_menu").val();
+	var qna_price = $(".qm_price").val();
+	
 	var ch3 = true;
+	var ch6 = true;
+	var ch7 = true;
 
 	$(".files").each(function() {
 		if ($(this).val() == "") {
 			ch3 = false;
 		}
 	});
+	
+	$(".qm_menu").each(function() {
+		if ($(this).val() == "") {
+			ch6 = false;
+		}
+	});
+	
+	$(".qm_price").each(function() {
+		if ($(this).val() == "") {
+			ch7 = false;
+		}
+	});
+	var ch5 = false; //전화번호검사
 
-	var ch1 = title != "";
-	var ch2 = qna_contents != "";
 
-	if (ch1 && ch2 && ch3) {
+
+		var regPhone =/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+
+		ch5 = regPhone.test($("#qna_phone").val());
+		
+		if(ch5==false){
+			alert('전화번호를 확인해주세요')
+		}
+	
+
+
+
+	var ch1 = title != ""; //식당 이름
+	var ch2 = qna_contents != "";//주소
+	var ch4 = qna_kind !=""; //카테고리
+
+	
+	if (ch1 && ch2 && ch3 && ch4 && ch5 && ch6 && ch7) {
 		// form 전송(submit event 강제 발생)
 		// $("#con").val(contents);// contents Server null일때
 		$("#form").submit();
 
 	} else {
 		// submit event 종료
-		alert("필수 요소는 다 입력하세요요");
+		alert("항목들을 확인해 주세요");
 		/*
 		 * console.log(title==''); console.log(contents=="");
 		 * console.log(title.length); console.log(contents.length);
@@ -112,6 +145,7 @@ $("#btn").click(function() {
 	}
 
 });
+
 
 // $("선택자 ").action();
 // $('#qna_contents').summernote({

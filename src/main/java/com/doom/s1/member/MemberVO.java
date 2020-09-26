@@ -7,7 +7,14 @@ public class MemberVO {
 	private String email;
 	private String name;
 	private String phone;
+	private int member_div;
 	
+	public int getMember_div() {
+		return member_div;
+	}
+	public void setMember_div(int member_div) {
+		this.member_div = member_div;
+	}
 	public String getId() {
 		return id;
 	}

@@ -6,7 +6,7 @@
 <mapper namespace="com.doom.s1.storeList.storeMenu.StoreMenuDAO">
 
 	<select id="storeMenuSelect" parameterType="java.lang.Long" resultType="com.doom.s1.storeList.storeMenu.StoreMenuVO">
-		SELECT * FROM storeMenu WHERE st_key=#{st_key}
+		SELECT * FROM storeMenu WHERE st_key=#{st_key} ORDER BY sm_key ASC
 	</select>
 	
 </mapper>

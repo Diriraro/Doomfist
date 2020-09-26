@@ -4,22 +4,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>공지사항</title>
+<title>DoomFood | 공지사항</title>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <c:import url="../template/boot.jsp"></c:import>
 <c:import url="../template/style.jsp"></c:import>
 </head>
-<body>
+<body>   
 <c:import url="../template/header.jsp"></c:import>
 
 <div class="container">
 	<div class="row">
 		   <div class="page-header text-center text-info">
-		   <div><img src="${pageContext.request.contextPath}/resources/images/notice.png"> </div> 
+		   <div><img src="${pageContext.request.contextPath}/resources/images/notice_2.png"> </div> 
     <br></br>
     <br></br>
+    <hr style=" border-top: 3px #80d6ff solid;">
   </div>
 		  <form style="margin-left: 16px;" action="./${board}List" class="form-inline">
 		  <div class="input-group input-group-sm col-xs-2">
@@ -37,9 +38,9 @@
 		    </div>
 		  </form>
 		</div>
-		<table class="table">
+		<table class="table" style="text-align: center;">
 			<tr style="background-color: #e6f5ff;">
-				<td>번호</td>
+				<td></td>
 				<td>제목</td>
 				<td>작성날짜</td>
 				<td>조회수</td>

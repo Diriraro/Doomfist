@@ -5,14 +5,19 @@
   
 <mapper namespace="com.doom.s1.qna.QnaDAO">
 
+	<select id="selectMember" parameterType="String" resultType="com.doom.s1.member.MemberVO">
+		SELECT * FROM member WHERE id=#{id}
+	</select>
+
 	<select id="qnaNum" resultType="Long">
 		select qna_storekey_seq.nextval from dual
 	</select>
 
   <insert id="qnaJoin" parameterType="com.doom.s1.qna.QnaVO">
-  	insert into qna values(#{qna_storekey}, #{qna_title}, #{id} ,#{qna_contents}, sysdate, #{qna_phone})
+  	insert into qna values(#{qna_storekey}, #{qna_title}, #{id} ,#{qna_contents}, sysdate, #{qna_phone},#{qna_kind},#{qna_tag})
   </insert>  
   
+
   <select id="qnaList" parameterType="com.doom.s1.util.Pager" resultType="com.doom.s1.qna.QnaVO">
   		select * from 
 			(select N.*,rownum R from 
@@ -31,6 +36,8 @@
 				<include refid="search"></include>) N)
 		where R between #{startRow} and #{lastRow}
 	</select>
+	
+	
 	
 	<sql id="search">
 		like '%'||#{search}||'%' and qna_storekey>=1 order by qna_storekey desc
@@ -60,6 +67,9 @@
 		select * from qna where qna_storekey = #{qna_storekey}
 	</select>
 	
+	<update id="memberUpdate">
+		update member set member_div =1
+	</update>
    	
   
 </mapper>

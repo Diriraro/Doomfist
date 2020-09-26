@@ -19,7 +19,7 @@ $("#add")
 					if (count < 6) {
 						$("#file")
 								.append(
-										'<div class="form-group"> <label for="file"> File :</label> <input type="file" class="form-control files" name="files"> <i class="glyphicon glyphicon-remove remove"></i> </div>');
+										'<div class="form-group"> <label for="file"> File :</label> <input style="width: 300px; display:inline-block;" type="file" class="form-control files" name="files">  <i  class="glyphicon glyphicon-remove remove"></i> </div>');
 						count++;
 					} else {
 						alert("파일은 최대 5개 까지입니다.")
@@ -98,7 +98,7 @@ $("#btn").click(function() {
 	var title="a";
 
 	var contents = $("#re_contents").summernote('code');
-	console.log($("#re_contents").summernote('isEmpty'));
+//	console.log($("#re_contents").summernote('isEmpty'));
 
 	var ch3 = true;
 

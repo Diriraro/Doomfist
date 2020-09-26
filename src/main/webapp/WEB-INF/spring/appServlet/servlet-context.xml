@@ -31,7 +31,7 @@
 	
 	
 	
-	<!-- <interceptors>
+	<interceptors>
 		<interceptor>
 			<mapping path="/notice/*"/>
 			<exclude-mapping path="/notice/noticeList"/>
@@ -40,24 +40,77 @@
 		</interceptor>
 		
 		<interceptor>
-			<mapping path="/member/memberMypage"/>
-			<beans:ref bean="memberInterceptor"/>
+			<mapping path="/qna/*"/>
+			<exclude-mapping path="/qna/qnaList"/>
+			<exclude-mapping path="/qna/qnaSelect"/>
+			<beans:ref bean="qnaJoinInterceptor"/>
 		</interceptor>
 		
 		<interceptor>
 			<mapping path="/qna/*"/>
-			<exclude-mapping path="/qna/qnaList"/>
-			<beans:ref bean="qnaInterceptor"/>
+			<exclude-mapping path="/qna/qnaJoin"/>
+			<beans:ref bean="qnaListInterceptor"/>
 		</interceptor>
 		
 		<interceptor>
-			URL Pattern
-			<mapping path="/*"/>
-			
-			Interceptor class
-			<beans:bean class="com.iu.s5.interceptor.TestInterceptor">	</beans:bean>
+			<mapping path="/storeList/storeListCheck"/>
+			<mapping path="/storeList/storeDelete"/>
+			<mapping path="/storeList/storeListChecks"/>
+			<beans:ref bean="storeListCheckInterceptor"/>
 		</interceptor>
-	</interceptors> -->
+		
+		<interceptor>
+			<mapping path="/storeList/storeListSelect"/>
+			<mapping path="/storeList/storeReviewWrite"/>
+			<beans:ref bean="storeListSelectInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/storeList/storeReviewWrite"/>
+			<beans:ref bean="selectReviewWriteInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/storeList/storeReviewDelete"/>
+			<beans:ref bean="storeListDeleteReviewInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/member/memberList"/>
+			<beans:ref bean="memberListInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/payment/payFirstSelect"/>
+			<!-- <mapping path="/payment/payReceipt"/> -->
+			<mapping path="/payment/paySecondSelect"/>
+			<mapping path="/payment/paySuccess"/>
+			<mapping path="/payment/payFail"/>
+			<beans:ref bean="paymentInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/payment/payReceipt"/>
+			<beans:ref bean="paymentInterceptor2"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/seller/sellList"/>
+			<beans:ref bean="sellerInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/seller/orderCheck"/>
+			<beans:ref bean="orderCheckInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/storeList/storePage"/>
+			<mapping path="/storeList/storePageUpdate"/>
+			<beans:ref bean="storePageInterceptor"/>
+		</interceptor>
+		
+	</interceptors> 
 	
 	<context:component-scan base-package="com.doom.s1" />
 	

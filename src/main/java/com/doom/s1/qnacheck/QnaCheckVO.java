@@ -12,7 +12,6 @@ public class QnaCheckVO {
 	private Date qc_date;
 	
 	
-
 	public String getQc_title() {
 		return qc_title;
 	}
