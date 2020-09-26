@@ -31,7 +31,7 @@
   	</insert>
 
 	<select id="Statuscheck" parameterType="String" resultType="com.doom.s1.qnacheck.QnaCheckVO">
-		select * from qnacheck where id=#{id} order by qna_storekey asc
+		select * from qnacheck where id=#{id} order by qc_check asc
 	</select>
 
 	<select id="selctFile" parameterType="Long" resultType="com.doom.s1.qna.qnaFile.QnaFileVO">

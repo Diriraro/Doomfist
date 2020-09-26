@@ -18,7 +18,7 @@
 			<!-- qna_title -->
 			<td>날짜</td>
 			<!-- qna_date -->
-			<td>승인 여부dd</td>
+			<td>승인 여부</td>
 		</tr>
 
 		
@@ -27,13 +27,13 @@
 				<td>${vo.qc_check}</td>
 				<td>${vo.qc_title}</td>
 				<td>${vo.qc_date}</td>
-				<td>
+				<td id="check">
 					<c:choose>
 					<c:when test="${vo.qna_storekey > 0}">
 						처리중
 					</c:when>
 					<c:otherwise>
-					${result[i.index]}
+						${result[i.index]}				
 					</c:otherwise>
 					</c:choose>
 				</td>
